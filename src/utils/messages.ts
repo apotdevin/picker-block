@@ -26,6 +26,7 @@ export const parseData = (
 
     return [];
   } catch (error) {
+    console.error(error);
     return [];
   }
 };

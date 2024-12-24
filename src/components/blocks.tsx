@@ -37,7 +37,7 @@ export const BlocksSection: FC<{ blocks: Block[] }> = ({ blocks }) => {
       );
 
       workerRef.current.onmessage = (event) => {
-        const { type, data, error } = event.data as {
+        const { type, data } = event.data as {
           type: "CONNECTED" | "MESSAGE" | "ERROR" | "CLOSED" | "LOADED";
           data?: string;
           error?: string;

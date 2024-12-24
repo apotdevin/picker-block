@@ -28,7 +28,7 @@ export const Options = () => {
     }
 
     setOptions(mapArrayToString(optionArray));
-  }, [optionArray]);
+  }, [optionArray, options, setOptions]);
 
   const addItem = (name: string, count: number) => {
     setName("");

@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { NuqsAdapter } from "nuqs/adapters/next";
-
-import { QueryClientProvider } from "@tanstack/react-query";
 import Providers from "@/components/providers";
 
 const geistSans = Geist({
