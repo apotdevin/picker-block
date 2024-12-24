@@ -1,20 +1,18 @@
 let socket;
 
 self.onmessage = (event) => {
-  const { type, payload } = event.data;
-
-  console.log({ type, payload });
+  const { type } = event.data;
 
   switch (type) {
     case "CONNECT": {
       if (socket) {
         socket.close();
       }
+
       socket = new WebSocket("wss://mempool.space/api/v1/ws");
 
       socket.onopen = () => {
         socket.send(JSON.stringify({ action: "want", data: ["blocks"] }));
-
         postMessage({ type: "CONNECTED" });
       };
 
