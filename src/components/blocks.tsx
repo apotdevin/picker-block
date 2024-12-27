@@ -157,9 +157,9 @@ export const BlocksSection: FC<{ blocks: Block[] }> = ({ blocks }) => {
             href={`https://mempool.space/block/${rows.first.id}`}
             target="_blank"
           >
-            <div className="rounded-xl border bg-card text-card-foreground flex flex-col justify-center items-center p-4 bg-violet-300 hover:bg-violet-400">
+            <div className="rounded-xl border text-card-foreground flex flex-col justify-center items-center p-4 bg-violet-300 hover:bg-violet-400">
               <div className="font-black leading-none tracking-tight mb-2">
-                {"1. " + rows.first.hashToOption}
+                {"1. " + (rows.first.hashToOption || "")}
               </div>
 
               <p className="text-xs">{`Block ${rows.first.height}`}</p>
@@ -180,9 +180,9 @@ export const BlocksSection: FC<{ blocks: Block[] }> = ({ blocks }) => {
                   href={`https://mempool.space/block/${msg.id}`}
                   target="_blank"
                 >
-                  <div className="rounded-xl border bg-card text-card-foreground flex flex-col justify-center items-center p-4 bg-indigo-300 hover:bg-indigo-400">
+                  <div className="rounded-xl border text-card-foreground flex flex-col justify-center items-center p-4 bg-indigo-300 hover:bg-indigo-400">
                     <div className="font-semibold leading-none tracking-tight mb-2">
-                      {`${idx + 2}. ` + msg.hashToOption}
+                      {`${idx + 2}. ` + (msg.hashToOption || "")}
                     </div>
 
                     <p className="text-xs">{`Block ${msg.height}`}</p>
@@ -206,9 +206,9 @@ export const BlocksSection: FC<{ blocks: Block[] }> = ({ blocks }) => {
                   href={`https://mempool.space/block/${msg.id}`}
                   target="_blank"
                 >
-                  <div className="rounded-xl border bg-card text-card-foreground flex flex-col justify-center items-center p-4 bg-blue-300 hover:bg-blue-400">
+                  <div className="rounded-xl border text-card-foreground flex flex-col justify-center items-center p-4 bg-blue-300 hover:bg-blue-400">
                     <div className="font-semibold leading-none tracking-tight mb-2">
-                      {`${idx + 4}. ` + msg.hashToOption}
+                      {`${idx + 4}. ` + (msg.hashToOption || "")}
                     </div>
 
                     <p className="text-xs">{`Block ${msg.height}`}</p>
@@ -232,9 +232,9 @@ export const BlocksSection: FC<{ blocks: Block[] }> = ({ blocks }) => {
                   href={`https://mempool.space/block/${msg.id}`}
                   target="_blank"
                 >
-                  <div className="rounded-xl border bg-card text-card-foreground flex flex-col justify-center items-center p-4 bg-sky-300 hover:bg-sky-400">
+                  <div className="rounded-xl border text-card-foreground flex flex-col justify-center items-center p-4 bg-sky-300 hover:bg-sky-400">
                     <div className="font-semibold leading-none tracking-tight mb-2">
-                      {`${idx + 7}. ` + msg.hashToOption}
+                      {`${idx + 7}. ` + (msg.hashToOption || "")}
                     </div>
 
                     <p className="text-xs">{`Block ${msg.height}`}</p>
