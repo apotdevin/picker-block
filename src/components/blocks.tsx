@@ -20,7 +20,7 @@ export const BlocksSection: FC<{ blocks: Block[] }> = ({ blocks }) => {
 
   const [loading, setLoading] = useState(false);
 
-  const [messages, setMessages] = useState<Block[]>(blocks);
+  const [_messages, setMessages] = useState<Block[]>(blocks);
 
   const [socketStatus, setSocketStatus] = useState<
     "Disconnected" | "Connected" | "Error"
@@ -29,6 +29,32 @@ export const BlocksSection: FC<{ blocks: Block[] }> = ({ blocks }) => {
   const optionArray = useMemo(() => {
     return expandString(options);
   }, [options]);
+
+  const rows = useMemo(() => {
+    const unique = uniqBy(_messages, "id");
+    const ordered = orderBy(unique, "height", "desc");
+
+    const enriched = ordered.map((b) => {
+      const hashToNumber = stringToNumberInRange(
+        b.id,
+        0,
+        optionArray.length - 1
+      );
+
+      const hashToOption = optionArray[hashToNumber];
+
+      return { ...b, hashToNumber, hashToOption };
+    });
+
+    const rows = {
+      first: enriched[0],
+      second: [enriched[1], enriched[2]],
+      third: [enriched[3], enriched[4], enriched[5]],
+      fourth: [enriched[6], enriched[7], enriched[8], enriched[9]],
+    };
+
+    return rows;
+  }, [_messages, optionArray]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -51,12 +77,7 @@ export const BlocksSection: FC<{ blocks: Block[] }> = ({ blocks }) => {
           case "MESSAGE":
             if (data) {
               const parsed = parseData(data);
-
-              setMessages((prev) => {
-                const fullArray = [...prev, ...parsed];
-                const unique = uniqBy(fullArray, "id");
-                return orderBy(unique, "height", "desc");
-              });
+              setMessages((prev) => [...prev, ...parsed]);
             }
             break;
 
@@ -69,7 +90,6 @@ export const BlocksSection: FC<{ blocks: Block[] }> = ({ blocks }) => {
             break;
 
           case "LOADED":
-            // workerRef.current?.postMessage({ type: "CONNECT" });
             break;
         }
       };
@@ -125,54 +145,112 @@ export const BlocksSection: FC<{ blocks: Block[] }> = ({ blocks }) => {
     );
   };
 
-  const lastPerson = stringToNumberInRange(
-    messages.length ? messages[0].id : "",
-    0,
-    optionArray.length - 1
-  );
-
   return (
     <div>
-      <div className="flex flex-col md:flex-row w-full justify-between items-center">
+      <div className="flex flex-col md:flex-row w-full justify-center items-center">
         <h1 className="text-4xl font-black">PICKER BLOCK</h1>
-        {messages.length ? (
-          <div className="font-semibold text-xl md:text-2xl">{`Current: ${
-            optionArray[lastPerson] || "..."
-          }`}</div>
-        ) : null}
       </div>
 
-      <div className="w-full text-center md:text-right mt-4">
-        {renderBadge()}
-      </div>
+      <div className="flex flex-col justify-center items-center gap-2 mt-6">
+        <div className="min-w-[160px]">
+          <a
+            href={`https://mempool.space/block/${rows.first.id}`}
+            target="_blank"
+          >
+            <div className="rounded-xl border bg-card text-card-foreground flex flex-col justify-center items-center p-4 bg-violet-300 hover:bg-violet-400">
+              <div className="font-black leading-none tracking-tight mb-2">
+                {"1. " + rows.first.hashToOption}
+              </div>
 
-      <div className="flex gap-2 overflow-auto w-full mt-4 mb-8">
-        {messages.map((msg, idx) => {
-          const number = stringToNumberInRange(
-            msg.id,
-            0,
-            optionArray.length - 1
-          );
-
-          return (
-            <div key={idx} className="min-w-[160px]">
-              <a href={`https://mempool.space/block/${msg.id}`} target="_blank">
-                <div className="rounded-xl border bg-card text-card-foreground flex flex-col justify-center items-center p-4">
-                  <div className="font-semibold leading-none tracking-tight mb-2">
-                    {optionArray[number]}
-                  </div>
-
-                  <p className="text-xs text-muted-foreground">{`Block ${msg.height}`}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {formatDistanceToNowStrict(new Date(msg.timestamp * 1000)) +
-                      " ago"}
-                  </p>
-                </div>
-              </a>
+              <p className="text-xs">{`Block ${rows.first.height}`}</p>
+              <p className="text-xs">
+                {formatDistanceToNowStrict(
+                  new Date(rows.first.timestamp * 1000)
+                ) + " ago"}
+              </p>
             </div>
-          );
-        })}
+          </a>
+        </div>
+
+        <div className="flex gap-2 overflow-auto w-full justify-center">
+          {rows.second.map((msg, idx) => {
+            return (
+              <div key={idx} className="min-w-[160px]">
+                <a
+                  href={`https://mempool.space/block/${msg.id}`}
+                  target="_blank"
+                >
+                  <div className="rounded-xl border bg-card text-card-foreground flex flex-col justify-center items-center p-4 bg-indigo-300 hover:bg-indigo-400">
+                    <div className="font-semibold leading-none tracking-tight mb-2">
+                      {`${idx + 2}. ` + msg.hashToOption}
+                    </div>
+
+                    <p className="text-xs">{`Block ${msg.height}`}</p>
+                    <p className="text-xs">
+                      {formatDistanceToNowStrict(
+                        new Date(msg.timestamp * 1000)
+                      ) + " ago"}
+                    </p>
+                  </div>
+                </a>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="gap-2 overflow-auto w-full justify-center md:flex hidden">
+          {rows.third.map((msg, idx) => {
+            return (
+              <div key={idx} className="min-w-[160px]">
+                <a
+                  href={`https://mempool.space/block/${msg.id}`}
+                  target="_blank"
+                >
+                  <div className="rounded-xl border bg-card text-card-foreground flex flex-col justify-center items-center p-4 bg-blue-300 hover:bg-blue-400">
+                    <div className="font-semibold leading-none tracking-tight mb-2">
+                      {`${idx + 4}. ` + msg.hashToOption}
+                    </div>
+
+                    <p className="text-xs">{`Block ${msg.height}`}</p>
+                    <p className="text-xs">
+                      {formatDistanceToNowStrict(
+                        new Date(msg.timestamp * 1000)
+                      ) + " ago"}
+                    </p>
+                  </div>
+                </a>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="gap-2 overflow-auto w-full justify-center md:flex hidden">
+          {rows.fourth.map((msg, idx) => {
+            return (
+              <div key={idx} className="min-w-[160px]">
+                <a
+                  href={`https://mempool.space/block/${msg.id}`}
+                  target="_blank"
+                >
+                  <div className="rounded-xl border bg-card text-card-foreground flex flex-col justify-center items-center p-4 bg-sky-300 hover:bg-sky-400">
+                    <div className="font-semibold leading-none tracking-tight mb-2">
+                      {`${idx + 7}. ` + msg.hashToOption}
+                    </div>
+
+                    <p className="text-xs">{`Block ${msg.height}`}</p>
+                    <p className="text-xs">
+                      {formatDistanceToNowStrict(
+                        new Date(msg.timestamp * 1000)
+                      ) + " ago"}
+                    </p>
+                  </div>
+                </a>
+              </div>
+            );
+          })}
+        </div>
       </div>
+      <div className="w-full text-center mt-4 mb-8">{renderBadge()}</div>
     </div>
   );
 };
