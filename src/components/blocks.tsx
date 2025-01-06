@@ -47,10 +47,7 @@ export const BlocksSection: FC<{ blocks: Block[] }> = ({ blocks }) => {
     });
 
     const rows = {
-      first: enriched[0],
-      second: [enriched[1], enriched[2]],
-      third: [enriched[3], enriched[4], enriched[5]],
-      fourth: [enriched[6], enriched[7], enriched[8], enriched[9]],
+      all: enriched,
     };
 
     return rows;
@@ -147,42 +144,20 @@ export const BlocksSection: FC<{ blocks: Block[] }> = ({ blocks }) => {
 
   return (
     <div>
-      <div className="flex flex-col md:flex-row w-full justify-center items-center">
-        <h1 className="text-4xl font-black">PICKER BLOCK</h1>
-      </div>
+      <div className="bg-card text-card-foreground border p-4 rounded-xl">
+        <div className="w-full text-center mb-2">{renderBadge()}</div>
 
-      <div className="flex flex-col justify-center items-center gap-2 mt-6">
-        <div className="min-w-[160px]">
-          <a
-            href={`https://mempool.space/block/${rows.first.id}`}
-            target="_blank"
-          >
-            <div className="rounded-xl border text-card-foreground flex flex-col justify-center items-center p-4 bg-violet-300 hover:bg-violet-400">
-              <div className="font-black leading-none tracking-tight mb-2">
-                {"1. " + (rows.first.hashToOption || "")}
-              </div>
-
-              <p className="text-xs">{`Block ${rows.first.height}`}</p>
-              <p className="text-xs">
-                {formatDistanceToNowStrict(
-                  new Date(rows.first.timestamp * 1000)
-                ) + " ago"}
-              </p>
-            </div>
-          </a>
-        </div>
-
-        <div className="flex gap-2 overflow-auto w-full justify-center">
-          {rows.second.map((msg, idx) => {
+        <div className="md:flex hidden flex-col justify-center md:items-center gap-2">
+          {rows.all.map((msg, idx) => {
             return (
               <div key={idx} className="min-w-[160px]">
                 <a
                   href={`https://mempool.space/block/${msg.id}`}
                   target="_blank"
                 >
-                  <div className="rounded-xl border text-card-foreground flex flex-col justify-center items-center p-4 bg-indigo-300 hover:bg-indigo-400">
+                  <div className="rounded-xl border text-card-foreground flex flex-col justify-center items-center p-4 bg-violet-200 hover:bg-violet-300">
                     <div className="font-semibold leading-none tracking-tight mb-2">
-                      {`${idx + 2}. ` + (msg.hashToOption || "")}
+                      {`${idx + 1}. ` + (msg.hashToOption || "")}
                     </div>
 
                     <p className="text-xs">{`Block ${msg.height}`}</p>
@@ -198,43 +173,17 @@ export const BlocksSection: FC<{ blocks: Block[] }> = ({ blocks }) => {
           })}
         </div>
 
-        <div className="gap-2 overflow-auto w-full justify-center md:flex hidden">
-          {rows.third.map((msg, idx) => {
+        <div className="md:hidden flex flex-col justify-center md:items-center gap-2">
+          {rows.all.slice(0, 3).map((msg, idx) => {
             return (
               <div key={idx} className="min-w-[160px]">
                 <a
                   href={`https://mempool.space/block/${msg.id}`}
                   target="_blank"
                 >
-                  <div className="rounded-xl border text-card-foreground flex flex-col justify-center items-center p-4 bg-blue-300 hover:bg-blue-400">
+                  <div className="rounded-xl border text-card-foreground flex flex-col justify-center items-center p-4 bg-violet-200 hover:bg-violet-300">
                     <div className="font-semibold leading-none tracking-tight mb-2">
-                      {`${idx + 4}. ` + (msg.hashToOption || "")}
-                    </div>
-
-                    <p className="text-xs">{`Block ${msg.height}`}</p>
-                    <p className="text-xs">
-                      {formatDistanceToNowStrict(
-                        new Date(msg.timestamp * 1000)
-                      ) + " ago"}
-                    </p>
-                  </div>
-                </a>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="gap-2 overflow-auto w-full justify-center md:flex hidden">
-          {rows.fourth.map((msg, idx) => {
-            return (
-              <div key={idx} className="min-w-[160px]">
-                <a
-                  href={`https://mempool.space/block/${msg.id}`}
-                  target="_blank"
-                >
-                  <div className="rounded-xl border text-card-foreground flex flex-col justify-center items-center p-4 bg-sky-300 hover:bg-sky-400">
-                    <div className="font-semibold leading-none tracking-tight mb-2">
-                      {`${idx + 7}. ` + (msg.hashToOption || "")}
+                      {`${idx + 1}. ` + (msg.hashToOption || "")}
                     </div>
 
                     <p className="text-xs">{`Block ${msg.height}`}</p>
@@ -250,7 +199,6 @@ export const BlocksSection: FC<{ blocks: Block[] }> = ({ blocks }) => {
           })}
         </div>
       </div>
-      <div className="w-full text-center mt-4 mb-8">{renderBadge()}</div>
     </div>
   );
 };

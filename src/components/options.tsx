@@ -41,60 +41,62 @@ export const Options = () => {
   };
 
   return (
-    <div className="w-full flex justify-center">
-      <div className="flex flex-col gap-2">
-        <div className="flex gap-2 items-end">
-          <div className="flex gap-2">
-            <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="name">Option</Label>
-              <Input
-                id="name"
-                value={name}
-                onChange={(v) => setName(v.target.value)}
-              />
-            </div>
-            <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="amount">Odds Size</Label>
-              <Input
-                id="amount"
-                value={amount}
-                onChange={(v) => {
-                  const amountNumber = Number(v.target.value);
-                  if (isNaN(amountNumber)) return 1;
-                  setAmount(amountNumber);
-                }}
-              />
-            </div>
-          </div>
-          <Button size={"icon"} onClick={() => addItem(name, amount)}>
-            <Plus />
-          </Button>
-        </div>
-
-        {optionArray.map((o, i) => (
-          <div key={o.name + o.count + i} className="flex gap-2 items-end">
+    <div>
+      <div className="bg-card text-card-foreground border p-4 rounded-xl">
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-2 items-end">
             <div className="flex gap-2">
               <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Input id={`name${o.name}`} defaultValue={o.name} readOnly />
+                <Label htmlFor="name">Option</Label>
+                <Input
+                  id="name"
+                  value={name}
+                  onChange={(v) => setName(v.target.value)}
+                />
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
+                <Label htmlFor="amount">Odds Size</Label>
                 <Input
-                  id={`amount${o.count}`}
-                  defaultValue={o.count}
-                  readOnly
+                  id="amount"
+                  value={amount}
+                  onChange={(v) => {
+                    const amountNumber = Number(v.target.value);
+                    if (isNaN(amountNumber)) return 1;
+                    setAmount(amountNumber);
+                  }}
                 />
               </div>
             </div>
-
-            <Button
-              variant={"secondary"}
-              size={"icon"}
-              onClick={() => removeItem(o.name)}
-            >
-              <Minus />
+            <Button size={"icon"} onClick={() => addItem(name, amount)}>
+              <Plus />
             </Button>
           </div>
-        ))}
+
+          {optionArray.map((o, i) => (
+            <div key={o.name + o.count + i} className="flex gap-2 items-end">
+              <div className="flex gap-2">
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                  <Input id={`name${o.name}`} defaultValue={o.name} readOnly />
+                </div>
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                  <Input
+                    id={`amount${o.count}`}
+                    defaultValue={o.count}
+                    readOnly
+                  />
+                </div>
+              </div>
+
+              <Button
+                variant={"secondary"}
+                size={"icon"}
+                onClick={() => removeItem(o.name)}
+              >
+                <Minus />
+              </Button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
