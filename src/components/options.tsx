@@ -10,7 +10,7 @@ export const Options = () => {
   const [name, setName] = useState<string>("");
   const [amount, setAmount] = useState<number>(1);
 
-  const [options, setOptions] = useQueryState("options");
+  const [options, setOptions] = useQueryState("options", { throttleMs: 100 });
 
   const [optionArray, setOptionArray] = useState<
     { name: string; count: number }[]
