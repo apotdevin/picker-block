@@ -32,27 +32,19 @@ export const parseData = (
 };
 
 export const stringToNumberInRange = (
-  str: string,
+  str: string, // full 64-char hex Bitcoin block hash
   min: number,
   max: number
 ): number => {
-  // 1. Create a simple hash from the string
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    // A common hash-like function: hash * 31 + charCode
-    hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash |= 0; // Convert to 32-bit integer
-  }
+  // Convert hex string to BigInt (unsigned 256-bit)
+  const x = BigInt("0x" + str);
 
-  // 2. Ensure hash is non-negative
-  // Math.abs can handle negative values from bitwise ops
-  hash = Math.abs(hash);
+  const rangeSize = BigInt(max - min + 1);
 
-  // 3. Map the hash into the [min, max] range
-  const rangeSize = max - min + 1;
-  const numberInRange = (hash % rangeSize) + min;
+  // Map uniformly into [min, max]
+  const n = x % rangeSize;
 
-  return numberInRange;
+  return Number(n) + min;
 };
 
 export const mapString = (
