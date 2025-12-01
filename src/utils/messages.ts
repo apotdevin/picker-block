@@ -36,6 +36,8 @@ export const stringToNumberInRange = (
   min: number,
   max: number
 ): number => {
+  if (min > max) return 0;
+
   // Convert hex string to BigInt (unsigned 256-bit)
   const x = BigInt("0x" + str);
 
